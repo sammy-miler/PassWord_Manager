@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - SecurePass Manager</title>
+    <!-- Fixed static file reference -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Your Passwords</h1>
+            <nav>
+                <a href="{{ url_for('add_password') }}" class="btn btn-primary">Add Password</a>
+                <a href="{{ url_for('logout') }}" class="btn btn-secondary">Logout</a>
+            </nav>
+        </header>
+
+        <!-- Fixed flash messages formatting -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% if passwords %}
+        <div class="table-container">
+            <table class="password-table">
+                <thead>
+                    <tr>
+                        <th>Service</th>
+                        <th>Username</th>
+                        <th class="actions-header">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for password in passwords %}
+                    <tr>
+                        <td>{{ password[1] }}</td>
+                        <td>{{ password[2] or '-' }}</td>
+                        <td class="actions-cell">
+                            <div class="button-group">
+                                <a href="{{ url_for('view_password', password_id=password[0]) }}" class="btn btn-small btn-view">View</a>
+                                <a href="{{ url_for('edit_password', password_id=password[0]) }}" class="btn btn-small btn-edit">Edit</a>
+                                <a href="{{ url_for('delete_password', password_id=password[0]) }}" class="btn btn-small btn-danger" onclick="return confirmDelete()">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <p>No passwords saved yet.</p>
+            <a href="{{ url_for('add_password') }}" class="btn btn-primary">Add your first password</a>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        function confirmDelete() {
+            return confirm("Are you sure you want to delete this password?");
+        }
+    </script>
+</body>
+</html>

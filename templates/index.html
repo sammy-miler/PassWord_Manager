@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecurePass Manager</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>SecurePass Manager</h1>
+            <p>Your secure password storage solution</p>
+        </header>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <div class="auth-buttons">
+            <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
+            <a href="{{ url_for('register') }}" class="btn btn-secondary">Register</a>
+        </div>
+
+        <div class="security-features">
+            <h3>Why Choose SecurePass?</h3>
+            <ul>
+                <li>🔒 Military-grade encryption</li>
+                <li>❓ Security question protection</li>
+                <li>🔄 Easy password recovery</li>
+                <li>📱 Responsive on all devices</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
